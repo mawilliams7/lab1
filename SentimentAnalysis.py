@@ -1,7 +1,11 @@
 """
-Lab 1
+CS 2302
 Mark Williams
-9-5-18
+Lab 1
+Diego Aguirre/Manoj Saha
+9-8-18
+Purpose: Use recursion to traverse a Reddit comment tree for positive,
+negative, and neutral comments.
 """
 
 import nltk
@@ -73,21 +77,23 @@ def process_comments(comments, i):
   neg = get_text_negative_proba(comments[i].body)
   neu = get_text_neutral_proba(comments[i].body)
   pos = get_text_positive_proba(comments[i].body)
-
+  # The criteria for separating comments into the three bins
   if neg > neu and neg > pos: 
     negative_comments_list.append(comments[i])
   elif neu > neg and neu > pos: 
     neutral_comments_list.append(comments[i])
   elif pos > neg and pos > neu: 
     positive_comments_list.append(comments[i])
-
+  else:
+    neutral_comments_list.append(comments[i])
+  # If a comment has replies, this block processes the first reply
   if comments[i].replies:
     negative_extension, neutral_extension, positive_extension = \
         process_comments(comments[i].replies, 0)
     negative_comments_list.extend(negative_extension)
     neutral_comments_list.extend(neutral_extension)
     positive_comments_list.extend(positive_extension)
-  
+  # Process the next comment in that level of comments
   negative_extension, neutral_extension, positive_extension = \
       process_comments(comments, i+1)
   negative_comments_list.extend(negative_extension)
@@ -175,16 +181,16 @@ def main():
   test_urls = ['https://www.reddit.com/r/ProgrammerHumor/comments/85a6n7/gru_tries_recursion/',
                'https://www.reddit.com/r/AstralProjection/comments/8u4e6k/ive_been_blind_since_birth_here_are_my_astral/',
 	       'https://www.reddit.com/r/Music/comments/9dh89z/the_cranberries_singer_dolores_oriordan_died_by/',
-	       'https://www.reddit.com/r/videos/comments/8m4scy/what_streaming_on_twitch_fulltime_does_to_your/',
+	       'https://www.reddit.com/r/pcmasterrace/comments/98wmdt/with_the_new_nvidia_gpus_announced_i_think_this/',
 	       'https://www.reddit.com/r/NYTauto/comments/8ld42b/local_geoffrey_hendricks_86_attentiongetting/']
-
+  # Creates the global variables necessary for getting oldest comment
   global ALL_COMMENT_DICT
   global ALL_LIST
   global NEGATIVE_COMMENT_DICT
   global NEGATIVE_LIST
   global POSITIVE_COMMENT_DICT
   global POSITIVE_LIST
-
+  # Iterates through the test urls and displays info about each
   for post_url in test_urls:
 
     ALL_COMMENT_DICT = {}
@@ -230,6 +236,8 @@ def main():
 	+ str(len(positive_comments_list)) + "\n")
 
     print("The oldest comment in this post is: ")
+    print(get_oldest_comment_any() + "\n")
+    print("The second oldest comment in this post is: ")
     print(get_oldest_comment_any() + "\n")
     print("The oldest positve comment in this post is: ")
     print(get_oldest_positive_comment() + "\n")
