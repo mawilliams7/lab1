@@ -142,6 +142,7 @@ def get_oldest_comment_any():
   del ALL_LIST[0]
   return oldest_comment.body
 
+
 def get_oldest_positive_comment():
   """
   Retrieves the oldest positive comment from a Reddit post.
@@ -158,6 +159,7 @@ def get_oldest_positive_comment():
   oldest_comment = POSITIVE_COMMENT_DICT[POSITIVE_LIST[0]]
   del POSITIVE_LIST[0]
   return oldest_comment.body
+
 
 def get_oldest_negative_comment():
   """
