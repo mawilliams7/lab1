@@ -246,5 +246,7 @@ def main():
     print("The oldest negative comment in this post is: ")
     print(get_oldest_negative_comment() + "\n")
 
+    #print("The oldest negative comment in this post is: ", get_oldest_negative_comment(), "\n")
+
 
 main()
